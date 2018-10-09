@@ -1,0 +1,11 @@
+Package: Rlab06
+Type: Package
+Title: knapsack package
+Version: 0.1.0
+Author: Yusur Al-Mter
+Maintainer: The package maintainer <yusur.mutair@gmail.com>
+Description: The package will contain three different functions for solving the knapsack problem.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
