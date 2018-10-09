@@ -26,6 +26,7 @@
 #'@export
 
 brute_force_knapsack <- function(x,W){
+    if(W < 0){stop('wrong weight limit!')}
     if(sum(abs(x[,1]) == x[,1]) != length(x[,1]) &
        sum(abs(x[,2]) == x[,2]) != length(x[,2])){stop('wrong input!')}
     n <- length(x[,1])
