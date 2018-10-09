@@ -2,6 +2,7 @@ Package: Rlab06
 Type: Package
 Title: knapsack package
 Version: 0.1.0
+Depends: R (>= 2.10)
 Author: Yusur Al-Mter
 Maintainer: The package maintainer <yusur.mutair@gmail.com>
 Description: The package will contain three different functions for solving the knapsack problem.
