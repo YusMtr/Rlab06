@@ -21,25 +21,40 @@
 #'
 #'@export
 
-greedy_knapsack <- function(x,W){
-  if(W < 0){stop('wrong weight limit!')}
-  if(sum(abs(x[,1]) == x[,1]) != length(x[,1]) &
-     sum(abs(x[,2]) == x[,2]) != length(x[,2])){stop('wrong input!')}
-n <- length(x[,1])
-x$p <- x[,2]/x[,1]
-x <- x[order(x$p, decreasing = TRUE),]
-value <- 0
-elements <- numeric()
-i <- 1
-while(W > 0){
-   if(x$w[i] <= W){
-   W <- W - x$w[i]
-   value <- value + x$v[i]
-   elements <- append(elements,rownames(x[i,]))
-   i <- i + 1} else{
-     break()}
+greedy_knapsack <- function(x, W) {
+  stopifnot(W > 0 &
+              is.data.frame(x) &
+              is.vector(x$v) &
+              is.vector(x$w) &
+              length(x$w) == length(x$v))
+  v <- x$v
+  w <- x$w
+  n <-  length(v)
+  bestValue <- replicate(n, 0)
+
+  itre <- order(v / w, decreasing = TRUE)
+
+  for(i in itre) {
+    temp <- (W - w[i] - sum(w[bestValue > 0])) / w[i]
+    if (temp > 0) {
+      bestValue[i] <- temp
+    } else {
+      break
+    }
+  }
+
+  result <- list(value = sum(v[bestValue > 0]), elements = which(bestValue > 0))
+  return(result)
 }
-output <- list(value = round(value), elements = as.numeric(elements))
-output
-}
+
+
+set.seed(42)
+n <- 16
+knapsack_objects <-
+  data.frame(
+    w=sample(1:4000, size = n, replace = TRUE),
+    v=runif(n = n, 0, 10000)
+  )
+
+greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
 
