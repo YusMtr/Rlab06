@@ -17,7 +17,8 @@
 #'  element.
 #'@param W integer  An integer that shows the limit for the weight that can be
 #'  carried by the knapsack.
-#' @examples brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500)
+#'@param parallel boolean deciding if computation should be done in parallel or concurrent
+#'@examples brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500)
 #'# $value
 #'# 16770
 #'# $elements

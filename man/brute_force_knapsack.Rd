@@ -12,6 +12,8 @@ element.}
 
 \item{W}{integer  An integer that shows the limit for the weight that can be
 carried by the knapsack.}
+
+\item{parallel}{boolean deciding if computation should be done in parallel or concurrent}
 }
 \description{
 The brute force search (the algorithm that has been used here in
