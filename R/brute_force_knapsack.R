@@ -25,73 +25,42 @@
 #'
 #'@export
 
-brute_force_knapsack <- function(x, W, parallel) {
-  if(W < 0){stop('wrong weight limit!')}
-  if(sum(abs(x[,1]) == x[,1]) != length(x[,1]) &
-     sum(abs(x[,2]) == x[,2]) != length(x[,2])){stop('wrong input!')}
+brute_force_knapsack <- function(x, W, parallel = FALSE) {
+  stopifnot(W > 0 &
+              is.data.frame(x) &
+              is.vector(x$v) &
+              is.vector(x$w) &
+              length(x$w) == length(x$v))
+  n <- length(x[[1]])
+  v <- x$v
+  w <- x$w
+  best <- replicate(n, 0)
 
-  if(parallel==FALSE)
-  {
-    n <- length(x[[1]])
-    v <- x$v
-    w <- x$w
-
-    best <- rep(0, n)
-    values <- c()
-
-    lapply(1:(2^n-1), function(x) {
+  if (parallel) {
+    # Checks each row of M if the weight is allowed
+    res_vec <- parallel::mclapply(1:(2^n-1), function(x, w, v, W) {
       m <- intToBits(x)
-
-      values <- sum(v[m==1])
-      bestval <- sum(v[best == 1])
-      weig <- sum(w[m == 1])
-
-      if (values > bestval &  weig <= W) {
-        best <<- m
-       }
-      })
-    }
-   else
-    {
-    n <- length(x[[1]])
-    v <- x$v
-    w <- x$w
-
-    best <- rep(0, n)
-    values <- c()
-
-    # Check the number of cores on the computer
-    cores <- parallel::detectCores()
-
-    cl <- parallel::makeCluster(cores, type = "PSOCK")
-
-    # Parallel calculation (parLapply):
-    resA <- parallel::parLapply(cl, 1:(2^n-1), fun= function(x)
-    {
-      m <- intToBits(x)
-
-      weig <- sum(w[m == 1])
-      if (weig <= W) {
+      if (sum(w[m == 1]) <= W) {
         return(m)
       }
-    })
+    }, w, v, W, mc.cores = parallel::detectCores())
 
-    lapply(resA, function(m)
-    {
-      values <- sum(v[m==1])
-      bestval <- sum(v[best == 1])
-
-      if(values > bestval)
-      {
+    # Takes all the allowed rows and calculates which one has the best value
+    lapply(Filter(Negate(is.null), res_vec), function(m) {
+      if (sum(v[m == 1]) > sum(v[best == 1])) {
         best <<- m
       }
     })
+  } else {
+    # Goes through each row of M to find the optimal value
+    lapply(1:(2^n-1), function(x) {
+      m <- intToBits(x)
+      if (sum(v[m == 1]) > sum(v[best == 1]) & sum(w[m == 1]) <= W) {
+        best <<- m
+      }
+    })
+  }
 
-    # Shut down cluster
-    parallel::stopCluster(cl)
-
-   }
   res <- list(value = sum(v[best == 1]), elements = which(best == 1))
-
   return(res)
 }
