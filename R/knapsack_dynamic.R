@@ -19,36 +19,42 @@
 #'
 #'@export
 
-knapsack_dynamic <- function(x,W){
-  if(W < 0){stop('wrong weight limit!')}
-  if(sum(abs(x[,1]) == x[,1]) != length(x[,1]) &
-     sum(abs(x[,2]) == x[,2]) != length(x[,2])){stop('wrong input!')}
-n <- length(x[,1]) + 1
-m <- matrix(0,nrow = n,ncol = W)
-w <- c(0,x[,1])
-v <- c(0,x[,2])
-#---- Creating a list to save the selected elements
-vec <- numeric()
-list <- rep(list(vec),W)
-elements <- rep(list(list), n)
-#----
-for(i in 2:n){
-  for(j in 1:W){
-    if(w[i] > j){m[i,j] <- m[i-1,j]
-                 elements[[i]][[j]] <- elements[[i-1]][[j]]
-    }else{
-        m[i,j] <- max(m[(i-1),j],(m[(i-1),(j-w[i])] + v[i]))
-        if(max(m[(i-1),j],(m[(i-1),(j-w[i])] + v[i])) == m[(i-1),j]){
-          elements[[i]][[j]] <- elements[[i-1]][[j]]
-        }else{elements[[i]][[j]] <- append(elements[[i-1]][[j-w[i]]],i)}
-      }
+knapsack_dynamic <- function(x, W) {
+  stopifnot(W > 0 &
+              is.data.frame(x) &
+              is.vector(x$v) &
+              is.vector(x$w) &
+              length(x$w) == length(x$v))
+  v <- x$v
+  w <- x$w
+  n <-  length(v)
+  m <- matrix(replicate(W * n, 0), nrow = n, ncol = W)
+  for (j in 1:W) {
+    m[1, j] <- 0
   }
+  for (i in 2:n) {
+    for (j in 1:W) {
+      if (w[i] > j) {
+        m[i, j] <- m[i - 1, j]
+      }
+      else {
+        m[i, j] <- max(m[i - 1, j], m[i - 1, j - w[i]] + v[i])
+      }
+    }
+  }
+  temp <- c()
+  wt <- W
+  i <- n
+  while (i > 1) {
+    if (m[i, wt] > m[i - 1, wt]) {
+      temp <- c(temp, i)
+      wt <- wt - w[i]
+      i <- i - 1
+    } else {
+      i <- i - 1
+    }
+  }
+  return(list(value = m[n, W], elements = rev(temp)))
 }
-value <- round(m[n,W])
-selected_elements <- elements[[n]][[W]] -1
-output <- list(value = value, elements = selected_elements)
-output
-}
 
-
-
+#knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)

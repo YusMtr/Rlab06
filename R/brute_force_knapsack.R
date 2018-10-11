@@ -25,50 +25,83 @@
 #'
 #'@export
 
-brute_force_knapsack <- function(x,W){
-    if(W < 0){stop('wrong weight limit!')}
-    if(sum(abs(x[,1]) == x[,1]) != length(x[,1]) &
-       sum(abs(x[,2]) == x[,2]) != length(x[,2])){stop('wrong input!')}
-    n <- length(x[,1])
-    sample_space <- intToBits(c(1:2^n))
-    mat <- matrix(sample_space,ncol = 32,byrow = TRUE)
-    mat <- mat[,1:n]
-    #each column shows one selection option
-    mat <- t(mat)
-    #---Weights
-    mat_weight <- matrix(0,byrow = FALSE, nrow = n,ncol = 2^n)
-    for(i in 1:2^n){
-      mat_weight[,i] <- as.numeric(mat[,i])*x[,1]
+brute_force_knapsack <- function(x, W, parallel) {
+  if(!is.data.frame(x) || W < 0){
+    stop("Errounous Input.")
+  }
+
+  if(parallel==FALSE)
+  {
+    n <- length(x[[1]])
+    v <- x$v
+    w <- x$w
+
+    best <- rep(0, n)
+    values <- c()
+
+    lapply(1:(2^n-1), function(x) {
+      m <- intToBits(x)
+
+      values <- sum(v[m==1])
+      bestval <- sum(v[best == 1])
+      weig <- sum(w[m == 1])
+
+      if (values > bestval &  weig <= W) {
+        best <<- m
+       }
+      })
     }
-    weight_each_selection <- colSums(mat_weight)
-    #---Values
-    mat_value <- matrix(0,byrow = FALSE, nrow = n ,ncol = 2^n)
-    for(i in 1:2^n){
-      mat_value[,i] <- as.numeric(mat[,i])*x[,2]
-    }
-    value_each_selection <- colSums(mat_value)
+   else
+    {
+    n <- length(x[[1]])
+    v <- x$v
+    w <- x$w
 
-    option <- data.frame(weight = weight_each_selection, value = value_each_selection)
-    option <- option[order(option[,2], decreasing = TRUE),]
+    best <- rep(0, n)
+    values <- c()
 
-    value <- 0
-    weight <- 0
-    for (i in 1:2^n){
-      value <- option[,2][i]
-      weight <-  option[,1][i]
-      if(weight <= W){break();}
-    }
+    # Check the number of cores on the computer
+    cores <- parallel::detectCores()
 
-    selected <- mat[,which(value_each_selection == value)]
-    selected <- which(selected != 00)
+    cl <- parallel::makeCluster(cores, type = "PSOCK")
 
-    output <- list(value = round(value) , elements = selected)
-    output
+    # Parallel calculation (parLapply):
+    resA <- parallel::parLapply(cl, 1:(2^n-1), fun= function(x)
+    {
+      m <- intToBits(x)
+
+      weig <- sum(w[m == 1])
+      if (weig <= W) {
+        return(m)
+      }
+    })
+
+    lapply(resA, function(m)
+    {
+      values <- sum(v[m==1])
+      bestval <- sum(v[best == 1])
+
+      if(values > bestval)
+      {
+        best <<- m
+      }
+    })
+
+    # Shut down cluster
+    parallel::stopCluster(cl)
+
+   }
+  res <- list(value = sum(v[best == 1]), elements = which(best == 1))
+
+  return(res)
 }
 
-
-
-
-
-
-
+#set.seed(42)
+#n <- 16
+#knapsack_objects <-
+#  data.frame(
+#    w=sample(1:4000, size = n, replace = TRUE),
+#    v=runif(n = n, 0, 10000)
+#  )
+#brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500,parallel = FALSE)
+#brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500,parallel = TRUE)
