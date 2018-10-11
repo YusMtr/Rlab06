@@ -4,7 +4,7 @@
 \alias{brute_force_knapsack}
 \title{brute_force_knapsack}
 \usage{
-brute_force_knapsack(x, W)
+brute_force_knapsack(x, W, parallel)
 }
 \arguments{
 \item{x}{data.frame  A data.frame that contains the weight and value of each
