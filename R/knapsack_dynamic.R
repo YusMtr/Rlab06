@@ -20,11 +20,13 @@
 #'@export
 
 knapsack_dynamic <- function(x, W) {
-  stopifnot(W > 0 &
-              is.data.frame(x) &
-              is.vector(x$v) &
-              is.vector(x$w) &
-              length(x$w) == length(x$v))
+  if(W < 0){stop('wrong weight limit!')}
+  if(sum(abs(x[,1]) == x[,1]) != length(x[,1]) &
+     sum(abs(x[,2]) == x[,2]) != length(x[,2])){stop('wrong input!')}
+#  stopifnot(is.data.frame(x) &
+#             is.vector(x$v) &
+#             is.vector(x$w) &
+#             length(x$w) == length(x$v))
   v <- x$v
   w <- x$w
   n <-  length(v)

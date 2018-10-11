@@ -26,9 +26,9 @@
 #'@export
 
 brute_force_knapsack <- function(x, W, parallel) {
-  if(!is.data.frame(x) || W < 0){
-    stop("Errounous Input.")
-  }
+  if(W < 0){stop('wrong weight limit!')}
+  if(sum(abs(x[,1]) == x[,1]) != length(x[,1]) &
+     sum(abs(x[,2]) == x[,2]) != length(x[,2])){stop('wrong input!')}
 
   if(parallel==FALSE)
   {
@@ -95,13 +95,3 @@ brute_force_knapsack <- function(x, W, parallel) {
 
   return(res)
 }
-
-#set.seed(42)
-#n <- 16
-#knapsack_objects <-
-#  data.frame(
-#    w=sample(1:4000, size = n, replace = TRUE),
-#    v=runif(n = n, 0, 10000)
-#  )
-#brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500,parallel = FALSE)
-#brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500,parallel = TRUE)

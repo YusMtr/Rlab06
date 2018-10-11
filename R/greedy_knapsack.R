@@ -22,11 +22,13 @@
 #'@export
 
 greedy_knapsack <- function(x, W) {
-  stopifnot(W > 0 &
-              is.data.frame(x) &
-              is.vector(x$v) &
-              is.vector(x$w) &
-              length(x$w) == length(x$v))
+  if(W < 0){stop('wrong weight limit!')}
+  if(sum(abs(x[,1]) == x[,1]) != length(x[,1]) &
+     sum(abs(x[,2]) == x[,2]) != length(x[,2])){stop('wrong input!')}
+#  stopifnot(is.data.frame(x) &
+#             is.vector(x$v) &
+#             is.vector(x$w) &
+#             length(x$w) == length(x$v))
   v <- x$v
   w <- x$w
   n <-  length(v)
@@ -46,15 +48,4 @@ greedy_knapsack <- function(x, W) {
   result <- list(value = sum(v[bestValue > 0]), elements = which(bestValue > 0))
   return(result)
 }
-
-
-set.seed(42)
-n <- 16
-knapsack_objects <-
-  data.frame(
-    w=sample(1:4000, size = n, replace = TRUE),
-    v=runif(n = n, 0, 10000)
-  )
-
-greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
 
