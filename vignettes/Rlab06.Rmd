@@ -221,7 +221,11 @@ microbenchmark(
 
 **Questions: **What performance gain could you get by trying to improving your code?
 
-For brute_force_knapsack(), delete row reduces the n in \\(2^n\\), which decreases the running time significantly. In knapsack_dynamic(), the time slightly improves. However, the way does not work in greedy funciton. In contrast, the time increases.
+For brute_force_knapsack(), delete rows reduces the n in \\(2^n\\), which decreases the running time significantly. 
+
+In knapsack_dynamic(), the time slightly improves. 
+
+However, this way does not working in greedy funciton. In contrast, the time increases.
 
 
 
