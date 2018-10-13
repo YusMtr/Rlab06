@@ -28,6 +28,7 @@ This package contains three different functions for solving the [knapsack proble
 devtools::install_github('yusur/Rlab06', build_vignettes = TRUE)
 ```
 
+***
 
 ## Brute force search
 This function going through all possible alternatives and return the maximum value found. This approach is of complexity O(2n) since all possible combinations 2n needs to be evaluated.
@@ -50,7 +51,6 @@ system.time(brute_force_knapsack(x = knapsack_objects[1:16, ], W = 3500))
 # 0.393   0.043   0.440
 ```
 
-
 **Parallelize**
 ```{r, eval = FALSE}
 system.time(brute_force_knapsack(x = knapsack_objects[1:16, ], W = 3500, parallel = TRUE))
@@ -61,7 +61,7 @@ system.time(brute_force_knapsack(x = knapsack_objects[1:16, ], W = 3500, paralle
 
 With parameter `parallel = TRUE`, the function will parallelize over the detected cores.
 
-
+***
 
 ## Dynamic programming
 Use dynamic programming to save all result in a matrix. The pseudocode for this algorithm can be found [here](https://en.wikipedia.org/wiki/Knapsack problem#0.2F1 knapsack problem) This function returns the same results as the brute force search, but the time complexity reduce to O(Wn).
@@ -89,7 +89,11 @@ system.time(knapsack_dynamic(x = knapsack_objects[1:500,], W = 3500))
 # 1.577   0.041   1.634
 ```
 
+***
+
 ## Greedy heuristic
+Sorting the items in decreasing order of value per unit of weight \\(v_i/w_i\\), it reduces the computational complexity considerably (actually to O(n log n) due to the sorting part of the algorithm).
+[Detail](https://en.wikipedia.org/wiki/Knapsack_problem#Greedy_approximation_algorithm)
 
 ```{r, eval = FALSE}
 greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
@@ -102,9 +106,15 @@ greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
 # [27] 574 577 599 719 747 764 776 794
 ```
 
-
-
 **Question: **How much time does it takes to run the algorithm for n = 1000000 objects?
+
+```{r, eval = FALSE}
+system.time(greedy_knapsack(x = knapsack_objects[1:1000000,], W = 3500))
+
+#  user  system elapsed 
+# 2.033   0.140   2.190 
+```
+
 
 
 ## Running Time comparison
@@ -144,11 +154,11 @@ for (i in 8:20) {
 
 **3 algorithm comparison**
 
-![](3 algorithm comparison.png){width=500px}
+![](3_algorithm_comparison.png){width=500px}
 
 **2 algorithm comparison**
 
-![](2 algorithm comparison.png){width=500px}
+![](2_algorithm_comparison.png){width=500px}
 
 
 ## Questions
