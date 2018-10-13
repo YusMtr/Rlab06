@@ -180,35 +180,35 @@ Compare two functions for each algorithm
 ```{r, eval = FALSE}
 microbenchmark(
   brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500),
-  brute_force_knapsack_2(x = knapsack_objects[1:8,], W = 3500)
+  brute_force_knapsack_2(x = knapsack_objects[1:8,], W = 3500) # delete rows
 )
 
 # Unit: microseconds
-#                                                           expr      min        lq     mean   median
-#    brute_force_knapsack(x = knapsack_objects[1:8, ], W = 3500) 1150.782 1326.2275 1613.680 1462.159
-#  brute_force_knapsack_2(x = knapsack_objects[1:8, ], W = 3500)  414.137  469.6995  679.918  512.928
-#         uq      max neval
-#  1575.7315 17255.67   100
-#   558.6925 16221.53   100
+#                                                           expr      min        lq      mean   median
+#    brute_force_knapsack(x = knapsack_objects[1:8, ], W = 3500) 1159.153 1247.0245 1313.3240 1285.831
+#  brute_force_knapsack_2(x = knapsack_objects[1:8, ], W = 3500)  434.828  486.4965  818.3258  514.294
+#         uq       max neval
+#  1353.8310  1678.324   100
+#   574.2465 15497.216   100
 
 # -----------------------------------------------------------------------------------
 microbenchmark(
   knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500),
-  knapsack_dynamic_2(x = knapsack_objects[1:12,], W = 3500)
+  knapsack_dynamic_2(x = knapsack_objects[1:12,], W = 3500) # delete rows
 )
 
 # Unit: milliseconds
-#                                                       expr      min       lq     mean   median       uq
-#    knapsack_dynamic(x = knapsack_objects[1:8, ], W = 3500) 19.92405 20.46019 23.61760 21.84204 24.38474
-#  knapsack_dynamic_2(x = knapsack_objects[1:8, ], W = 3500) 14.90476 15.15309 16.85688 15.96900 17.81690
+#                                                        expr      min       lq     mean   median       uq
+#    knapsack_dynamic(x = knapsack_objects[1:12, ], W = 3500) 30.13091 31.39239 34.39313 33.78343 35.09407
+#  knapsack_dynamic_2(x = knapsack_objects[1:12, ], W = 3500) 27.85980 29.04838 31.22742 31.60245 32.92944
 #        max neval
-#  132.02430   100
-#   41.21217   100
+#  128.07863   100
+#   38.41256   100
 
 # -----------------------------------------------------------------------------------
 microbenchmark(
   greedy_knapsack(x = knapsack_objects[1:500,], W = 3500),
-  greedy_knapsack_2(x = knapsack_objects[1:500,], W = 3500)
+  greedy_knapsack_2(x = knapsack_objects[1:500,], W = 3500) # delete rows
 )
 
 # Unit: microseconds
