@@ -36,6 +36,7 @@ brute_force_knapsack <- function(x, W, parallel = FALSE) {
   if (length(i != 0)) {
     x <- x[-i, ]
   }
+  nm <- as.numeric(rownames(x))
   
   n <- length(x[[1]])
   v <- x$v
@@ -67,6 +68,6 @@ brute_force_knapsack <- function(x, W, parallel = FALSE) {
     })
   }
 
-  res <- list(value = sum(v[best == 1]), elements = which(best == 1))
+  res <- list(value = sum(v[best == 1]), elements = nm[which(best == 1)])
   return(res)
 }

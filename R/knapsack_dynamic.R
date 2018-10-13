@@ -29,14 +29,14 @@ knapsack_dynamic <- function(x, W) {
   if (length(i != 0)) {
     x <- x[-i, ]
   }
+  nm <- as.numeric(rownames(x))
   
-  v <- x$v
-  w <- x$w
-  n <-  length(v)
+  v <- c(0, x$v)
+  w <- c(0, x$w)
+  n <- length(v)
+  W <- W+ 1
   m <- matrix(replicate(W * n, 0), nrow = n, ncol = W)
-  for (j in 1:W) {
-    m[1, j] <- 0
-  }
+
   for (i in 2:n) {
     for (j in 1:W) {
       if (w[i] > j) {
@@ -59,7 +59,7 @@ knapsack_dynamic <- function(x, W) {
       i <- i - 1
     }
   }
-  return(list(value = m[n, W], elements = rev(temp)))
+  return(list(value = m[n, W], elements = rev(nm[temp-1])))
 }
 
 #knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
