@@ -32,6 +32,11 @@ brute_force_knapsack <- function(x, W, parallel = FALSE) {
               is.vector(x$v) &
               is.vector(x$w) &
               length(x$w) == length(x$v))
+  i <- which(x$w > W)
+  if (length(i != 0)) {
+    x <- x[-i, ]
+  }
+  
   n <- length(x[[1]])
   v <- x$v
   w <- x$w

@@ -25,6 +25,11 @@ knapsack_dynamic <- function(x, W) {
               is.vector(x$v) &
               is.vector(x$w) &
               length(x$w) == length(x$v))
+  i <- which(x$w > W)
+  if (length(i != 0)) {
+    x <- x[-i, ]
+  }
+  
   v <- x$v
   w <- x$w
   n <-  length(v)
