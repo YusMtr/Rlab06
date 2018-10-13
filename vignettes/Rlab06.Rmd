@@ -1,7 +1,6 @@
 ---
 title: "Rlab06"
 author: "Group 04"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Rlab06}
@@ -30,8 +29,8 @@ devtools::install_github('yusur/Rlab06', build_vignettes = TRUE)
 
 ***
 
-## Brute force search
-This function going through all possible alternatives and return the maximum value found. This approach is of complexity O(2n) since all possible combinations 2n needs to be evaluated.
+## 1. Brute force search
+This function going through all possible alternatives and return the maximum value found. This approach is of complexity \\(O(2^n)\\) since all possible combinations \\(2^n\\) needs to be evaluated.
 
 ```{r, eval = FALSE}
 data("knapsack_objects")
@@ -65,8 +64,8 @@ With parameter `parallel = TRUE`, the function will parallelize over the detecte
 
 ***
 
-## Dynamic programming
-Use dynamic programming to save all result in a matrix. The pseudocode for this algorithm can be found [here](https://en.wikipedia.org/wiki/Knapsack problem#0.2F1 knapsack problem) This function returns the same results as the brute force search, but the time complexity reduce to O(Wn).
+## 2. Dynamic programming
+Use dynamic programming to save all result in a matrix. The pseudocode for this algorithm can be found [here](https://en.wikipedia.org/wiki/Knapsack problem#0.2F1 knapsack problem) This function returns the same results as the brute force search, but the time complexity reduce to \\(O(Wn)\\).
 
 ```{r, eval = FALSE}
 knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
@@ -93,8 +92,8 @@ system.time(knapsack_dynamic(x = knapsack_objects[1:500,], W = 3500))
 
 ***
 
-## Greedy heuristic
-Sorting the items in decreasing order of value per unit of weight \\(v_i/w_i\\), it reduces the computational complexity considerably (actually to O(n log n) due to the sorting part of the algorithm).
+## 3. Greedy heuristic
+Sorting the items in decreasing order of value per unit of weight \\(v_i/w_i\\), it reduces the computational complexity considerably (actually to\\(O(nlog(n))\\) due to the sorting part of the algorithm).
 [Detail](https://en.wikipedia.org/wiki/Knapsack_problem#Greedy_approximation_algorithm)
 
 ```{r, eval = FALSE}
