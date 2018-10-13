@@ -52,6 +52,8 @@ system.time(brute_force_knapsack(x = knapsack_objects[1:16, ], W = 3500))
 ```
 
 **Parallelize**
+**Question: **What performance gain could you get by parallelizing brute force search?
+
 ```{r, eval = FALSE}
 system.time(brute_force_knapsack(x = knapsack_objects[1:16, ], W = 3500, parallel = TRUE))
 
@@ -59,7 +61,7 @@ system.time(brute_force_knapsack(x = knapsack_objects[1:16, ], W = 3500, paralle
 # 0.506   0.300   0.283 
 ```
 
-With parameter `parallel = TRUE`, the function will parallelize over the detected cores.
+With parameter `parallel = TRUE`, the function will parallelize over the detected cores. Elapsed time reduced from 0.440s to 0.283s.
 
 ***
 
@@ -115,10 +117,12 @@ system.time(greedy_knapsack(x = knapsack_objects[1:1000000,], W = 3500))
 # 2.033   0.140   2.190 
 ```
 
+***
 
+## Profiling and optimizing code
 
-## Running Time comparison
-
+### Before optimizing code
+**Running Time comparison**
 ```{r, eval = FALSE}
 run_time <- data.frame()
 for (i in 8:20) {
@@ -152,17 +156,82 @@ for (i in 8:20) {
 ```
 
 
-**3 algorithm comparison**
+**Brute Force vs Greedy vs Dynamic Programming**
 
 ![](3_algorithm_comparison.png){width=500px}
 
-**2 algorithm comparison**
+**Greedy vs Dynamic Programming**
 
 ![](2_algorithm_comparison.png){width=500px}
 
+### Optimize code
 
-## Questions
+**Add code: delete rows which weight are larger than W.**
 
 
-**1.1.6 What performance gain could you get by trying to improving your code?**
+```{r, eval = FALSE}
+i <- which(x$w > W)
+if (length(i != 0)) {
+  x <- x[-i, ]
+}
+```
+
+Compare two functions for each algorithm
+```{r, eval = FALSE}
+microbenchmark(
+  brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500),
+  brute_force_knapsack_2(x = knapsack_objects[1:8,], W = 3500)
+)
+
+# Unit: microseconds
+#                                                           expr      min        lq     mean   median
+#    brute_force_knapsack(x = knapsack_objects[1:8, ], W = 3500) 1150.782 1326.2275 1613.680 1462.159
+#  brute_force_knapsack_2(x = knapsack_objects[1:8, ], W = 3500)  414.137  469.6995  679.918  512.928
+#         uq      max neval
+#  1575.7315 17255.67   100
+#   558.6925 16221.53   100
+
+# -----------------------------------------------------------------------------------
+microbenchmark(
+  knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500),
+  knapsack_dynamic_2(x = knapsack_objects[1:12,], W = 3500)
+)
+
+# Unit: milliseconds
+#                                                       expr      min       lq     mean   median       uq
+#    knapsack_dynamic(x = knapsack_objects[1:8, ], W = 3500) 19.92405 20.46019 23.61760 21.84204 24.38474
+#  knapsack_dynamic_2(x = knapsack_objects[1:8, ], W = 3500) 14.90476 15.15309 16.85688 15.96900 17.81690
+#        max neval
+#  132.02430   100
+#   41.21217   100
+
+# -----------------------------------------------------------------------------------
+microbenchmark(
+  greedy_knapsack(x = knapsack_objects[1:500,], W = 3500),
+  greedy_knapsack_2(x = knapsack_objects[1:500,], W = 3500)
+)
+
+# Unit: microseconds
+#                                                        expr     min      lq     mean   median       uq
+#    greedy_knapsack(x = knapsack_objects[1:500, ], W = 3500) 460.106 530.436 624.4755 567.9910 584.8190
+#  greedy_knapsack_2(x = knapsack_objects[1:500, ], W = 3500) 480.208 551.383 603.2143 604.7195 637.5355
+#       max neval
+#  5207.359   100
+#   816.273   100
+```
+
+**Questions: **What performance gain could you get by trying to improving your code?
+
+For brute_force_knapsack(), delete row reduces the n in \\(2^n\\), which decreases the running time significantly. In knapsack_dynamic(), the time slightly improves. However, the way does not work in greedy funciton. In contrast, the time increases.
+
+
+
+***
+
+
+
+
+
+
+
 
