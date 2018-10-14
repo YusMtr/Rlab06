@@ -16,13 +16,14 @@ knitr::opts_chunk$set(
 ```
 
 ## Introduction
-This package contains three different functions for solving the [knapsack problem](https://en.wikipedia.org/wiki/Knapsack problem). These three functions implement knapasck problem by different algorithm.
+This package contains three different functions for solving the [knapsack problem](https://en.wikipedia.org/wiki/Knapsack problem). These three functions implement knapasck problem by different algorithms:
 
 1. Brute force search
 2. Dynamic programming
 3. Greedy heuristic
 
 **Installation**
+
 ```{r, eval=FALSE, message=FALSE, warning=FALSE}
 devtools::install_github('yusur/Rlab06', build_vignettes = TRUE)
 ```
@@ -65,7 +66,7 @@ With parameter `parallel = TRUE`, the function will parallelize over the detecte
 ***
 
 ## 2. Dynamic programming
-Use dynamic programming to save all result in a matrix. The pseudocode for this algorithm can be found [here](https://en.wikipedia.org/wiki/Knapsack problem#0.2F1 knapsack problem) This function returns the same results as the brute force search, but the time complexity reduce to \\(O(Wn)\\).
+Use dynamic programming to save all results in a matrix. The pseudocode for this algorithm can be found [here](https://en.wikipedia.org/wiki/Knapsack problem#0.2F1 knapsack problem) This function returns the same results as the brute force search, but the time complexity reduce to \\(O(Wn)\\).
 
 ```{r, eval = FALSE}
 knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
@@ -165,7 +166,7 @@ for (i in 8:20) {
 
 ### Optimize code
 
-**Add code: delete rows which weight are larger than W.**
+**Add code: deleting rows which weights are larger than W.**
 
 
 ```{r, eval = FALSE}
@@ -211,30 +212,23 @@ microbenchmark(
 )
 
 # Unit: microseconds
-#                                                        expr     min       lq     mean  median       uq
-#    greedy_knapsack(x = knapsack_objects[1:500, ], W = 3500) 458.123 474.1060 579.3212 522.127 549.1550
-#  greedy_knapsack_2(x = knapsack_objects[1:500, ], W = 3500) 495.375 514.9285 568.2906 551.919 586.2285
+#                                                        expr     min      lq     mean   median       uq
+#    greedy_knapsack(x = knapsack_objects[1:500, ], W = 3500) 460.106 530.436 624.4755 567.9910 584.8190
+#  greedy_knapsack_2(x = knapsack_objects[1:500, ], W = 3500) 480.208 551.383 603.2143 604.7195 637.5355
 #       max neval
-#  4506.105   100
-#  1148.159   100
+#  5207.359   100
+#   816.273   100
 ```
 
 **Questions: **What performance gain could you get by trying to improving your code?
 
-For brute_force_knapsack(), delete rows reduces the n in \\(2^n\\), which decreases the running time significantly. 
+For brute_force_knapsack(),by deleting rows, as mentione, we could reduce the n in \\(2^n\\), which decreased the running time significantly. 
 
-In knapsack_dynamic(), the time slightly improves. 
+In knapsack_dynamic(), the time slightly improved. 
 
-However, this way does not working in greedy funciton. In contrast, the time increases.
+However, this solution did not work for greedy funciton. In contrast,for this function the time increased.
 
 
 
 ***
-
-
-
-
-
-
-
 
