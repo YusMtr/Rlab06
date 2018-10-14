@@ -212,21 +212,34 @@ microbenchmark(
 )
 
 # Unit: microseconds
-#                                                        expr     min      lq     mean   median       uq
-#    greedy_knapsack(x = knapsack_objects[1:500, ], W = 3500) 460.106 530.436 624.4755 567.9910 584.8190
-#  greedy_knapsack_2(x = knapsack_objects[1:500, ], W = 3500) 480.208 551.383 603.2143 604.7195 637.5355
+#                                                        expr     min       lq     mean  median       uq
+#    greedy_knapsack(x = knapsack_objects[1:500, ], W = 3500) 458.123 474.1060 579.3212 522.127 549.1550
+#  greedy_knapsack_2(x = knapsack_objects[1:500, ], W = 3500) 495.375 514.9285 568.2906 551.919 586.2285
 #       max neval
-#  5207.359   100
-#   816.273   100
+#  4506.105   100
+#  1148.159   100
+
+microbenchmark(
+  greedy_knapsack(x = knapsack_objects[1:1000,], W = 3500),
+  greedy_knapsack_2(x = knapsack_objects[1:1000,], W = 3500) # delete rows
+)
+
+# Unit: microseconds
+#                                                         expr     min       lq     mean   median       uq
+#    greedy_knapsack(x = knapsack_objects[1:1000, ], W = 3500) 773.778 793.4150 936.6414 802.3610 829.9505
+#  greedy_knapsack_2(x = knapsack_objects[1:1000, ], W = 3500) 795.192 818.9715 945.5444 830.4445 871.2720
+#       max neval
+#  8189.500   100
+#  7078.734   100
 ```
 
 **Questions: **What performance gain could you get by trying to improving your code?
 
-For brute_force_knapsack(),by deleting rows, as mentione, we could reduce the n in \\(2^n\\), which decreased the running time significantly. 
+For brute_force_knapsack(), by deleting rows, as mentione, we could reduce the n in \\(2^n\\), which decreased the running time significantly. 
 
 In knapsack_dynamic(), the time slightly improved. 
 
-However, this solution did not work for greedy funciton. In contrast,for this function the time increased.
+However, this solution did not work for greedy funciton. It did not have significant improvement. In contrast, for this function the time increased.
 
 
 
