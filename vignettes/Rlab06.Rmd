@@ -211,12 +211,12 @@ microbenchmark(
 )
 
 # Unit: microseconds
-#                                                        expr     min      lq     mean   median       uq
-#    greedy_knapsack(x = knapsack_objects[1:500, ], W = 3500) 460.106 530.436 624.4755 567.9910 584.8190
-#  greedy_knapsack_2(x = knapsack_objects[1:500, ], W = 3500) 480.208 551.383 603.2143 604.7195 637.5355
+#                                                        expr     min       lq     mean  median       uq
+#    greedy_knapsack(x = knapsack_objects[1:500, ], W = 3500) 458.123 474.1060 579.3212 522.127 549.1550
+#  greedy_knapsack_2(x = knapsack_objects[1:500, ], W = 3500) 495.375 514.9285 568.2906 551.919 586.2285
 #       max neval
-#  5207.359   100
-#   816.273   100
+#  4506.105   100
+#  1148.159   100
 ```
 
 **Questions: **What performance gain could you get by trying to improving your code?
