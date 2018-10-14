@@ -5,9 +5,12 @@
 ### Introduction
 
 This package contains three different functions for solving the knapsack problem. These three functions implement knapasck problem by different algorithm.
-Brute force search
-Dynamic programming
-Greedy heuristic
+
+1. Brute force search
+
+2. Dynamic programming
+
+3. Greedy heuristic
 
 ### Installation
 
